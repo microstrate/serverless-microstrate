@@ -1,0 +1,65 @@
+service: hello-world
+
+plugins:
+  # - serverless-microstrate
+  # during dev
+  - ../
+
+package:
+  individually: true
+
+provider:
+  name: microstrate
+  region: eu-west-2
+  runtime: nodejs20.x
+  stage: prod
+  environment:
+    SERVICE: ${self:service}
+
+resources:
+  Description: ${self:service} service stack
+  Resources:
+    DataStore:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        TableName: DataStore
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+
+    DataBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
+      Properties:
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+        BucketName: DataBucket
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - PUT
+                - POST
+                - GET
+              ExposedHeaders:
+                - x-amz-server-side-encryption
+                - x-amz-request-id
+                - x-amz-id-2
+              MaxAge: 3000
+
+functions:
+  hello:
+    handler: handler.hello
+    description: hello world desc
+    memorySize: 128
+    timeout: 3

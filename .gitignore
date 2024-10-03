@@ -1,0 +1,56 @@
+coverage
+dist
+npm-debug.log*
+tmp
+.env
+.DS_Store
+.nyc_output
+.idea
+.venv
+*.log
+.stryker-tmp
+reports
+mutation
+.migrate,
+tags
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+node_modules
+jspm_packages
+
+
+# Optional npm cache directory
+.npm
+
+# Serverless directories
+.serverless
+
+# Folders to ignore
+
+# Files to ignore.
+.nvmrc
