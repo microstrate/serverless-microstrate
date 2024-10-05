@@ -23,6 +23,7 @@ resources:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
+        Description: Table for storing records
         TableName: DataStore
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
@@ -36,11 +37,17 @@ resources:
       Type: AWS::S3::Bucket
       DeletionPolicy: Retain
       Properties:
+        Description: Bucket for storing files
         BucketEncryption:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
         BucketName: DataBucket
+        Tags:
+          - Key: a
+            Value: b
+          - Key: c
+            Value: d
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
