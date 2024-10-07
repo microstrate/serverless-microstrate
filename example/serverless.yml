@@ -17,7 +17,7 @@ provider:
   runtime: nodejs20.x
   architecture: arm64
   stage: prod
-  memorySize: 1024 # default is 1024
+  memorySize: 1024
   timeout: 60
   environment:
     SERVICE: ${self:service}
@@ -31,13 +31,16 @@ resources:
       Properties:
         Description: Table for storing records
         TableName: DataStore
-        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
             AttributeType: S
         KeySchema:
           - AttributeName: PK
             KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
 
     DataBucket:
       Type: AWS::S3::Bucket
@@ -54,28 +57,15 @@ resources:
             Value: b
           - Key: c
             Value: d
-        CorsConfiguration:
-          CorsRules:
-            - AllowedOrigins:
-                - '*'
-              AllowedHeaders:
-                - '*'
-              AllowedMethods:
-                - PUT
-                - POST
-                - GET
-              ExposedHeaders:
-                - x-amz-server-side-encryption
-                - x-amz-request-id
-                - x-amz-id-2
-              MaxAge: 3000
 
 functions:
   hello:
     handler: handler.hello
-    description: hello world desc
+    description: hello desc
     memorySize: 128
     timeout: 3
+    environment:
+      APP_ENV_VARIABLE: FOOBAR
     events:
       - http:
           path: ${self:custom.apiPrefix}/hello
@@ -83,3 +73,7 @@ functions:
           cors:
             origins:
               - '*'
+
+  world:
+    handler: handler.hello
+    description: world desc
