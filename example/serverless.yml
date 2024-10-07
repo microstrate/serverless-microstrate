@@ -8,11 +8,17 @@ plugins:
 package:
   individually: true
 
+custom:
+  apiPrefix: apiv2
+
 provider:
   name: microstrate
   region: eu-west-2
   runtime: nodejs20.x
+  architecture: arm64
   stage: prod
+  memorySize: 1024 # default is 1024
+  timeout: 60
   environment:
     SERVICE: ${self:service}
 
@@ -70,3 +76,10 @@ functions:
     description: hello world desc
     memorySize: 128
     timeout: 3
+    events:
+      - http:
+          path: ${self:custom.apiPrefix}/hello
+          method: 'post'
+          cors:
+            origins:
+              - '*'
