@@ -98,6 +98,8 @@ functions:
   world:
     handler: handler.hello
     description: world desc
+    tags:
+      foo: bar
 
   helloWorld:
     handler: handler.hello
