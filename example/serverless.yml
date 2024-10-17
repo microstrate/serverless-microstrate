@@ -98,3 +98,13 @@ functions:
   world:
     handler: handler.hello
     description: world desc
+
+  helloWorld:
+    handler: handler.hello
+    events:
+      - httpApi: 'POST /hello'
+      - httpApi: 'PUT /hello'
+      - httpApi: 'DELETE /hello'
+      - httpApi:
+          method: GET
+          path: /hello
