@@ -1,0 +1,112 @@
+service: hello-world
+
+plugins:
+  # - serverless-microstrate
+  # during dev
+  - ../
+
+package:
+  individually: true
+
+custom:
+  apiPrefix: apiv2
+
+provider:
+  name: microstrate
+  region: eu-west-2
+  runtime: nodejs20.x
+  architecture: arm64
+  stage: prod
+  memorySize: 1024
+  timeout: 60
+  environment:
+    SERVICE: ${self:service}
+
+resources:
+  Description: ${self:service} service stack
+  Resources:
+    DataStore:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        Description: Table for storing records
+        TableName: DataStore
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+          - AttributeName: subject
+            AttributeType: S
+          - AttributeName: topic
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: subject
+            KeySchema:
+              - AttributeName: subject
+                KeyType: HASH
+              - AttributeName: SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: topic
+            KeySchema:
+              - AttributeName: topic
+                KeyType: HASH
+              - AttributeName: SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    DataBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
+      Properties:
+        Description: Bucket for storing files
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+        BucketName: DataBucket
+        Tags:
+          - Key: a
+            Value: b
+          - Key: c
+            Value: d
+
+functions:
+  hello:
+    handler: handler.hello
+    description: hello desc
+    memorySize: 128
+    timeout: 3
+    environment:
+      APP_ENV_VARIABLE: FOOBAR
+    events:
+      - http:
+          path: ${self:custom.apiPrefix}/hello
+          method: 'post'
+          cors:
+            origins:
+              - '*'
+
+  world:
+    handler: handler.hello
+    description: world desc
+    tags:
+      foo: bar
+
+  helloWorld:
+    handler: handler.hello
+    events:
+      - httpApi: 'POST /hello'
+      - httpApi: 'PUT /hello'
+      - httpApi: 'DELETE /hello'
+      - httpApi:
+          method: GET
+          path: /hello

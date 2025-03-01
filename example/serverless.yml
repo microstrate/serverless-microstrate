@@ -26,58 +26,64 @@ resources:
   Description: ${self:service} service stack
   Resources:
     DataStore:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        Description: Table for storing records
-        TableName: DataStore
-        AttributeDefinitions:
-          - AttributeName: PK
-            AttributeType: S
-          - AttributeName: SK
-            AttributeType: S
-          - AttributeName: subject
-            AttributeType: S
-          - AttributeName: topic
-            AttributeType: S
-        KeySchema:
-          - AttributeName: PK
-            KeyType: HASH
-          - AttributeName: SK
-            KeyType: RANGE
-        GlobalSecondaryIndexes:
-          - IndexName: subject
-            KeySchema:
-              - AttributeName: subject
-                KeyType: HASH
-              - AttributeName: SK
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-          - IndexName: topic
-            KeySchema:
-              - AttributeName: topic
-                KeyType: HASH
-              - AttributeName: SK
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
+      type: microstrate::kv::bucket
+      deletionPolicy: retain
+      properties:
+        name: DataStore
+        description: Table for storing records
+        indexing:
+          mappings:
+            - field: PK
+              fieldType: text
+            - field: SK
+              fieldType: text
+            - field: subject
+              fieldType: text
+            - field: topic
+              fieldType: tex
 
     DataBucket:
-      Type: AWS::S3::Bucket
-      DeletionPolicy: Retain
-      Properties:
-        Description: Bucket for storing files
-        BucketEncryption:
-          ServerSideEncryptionConfiguration:
-            - ServerSideEncryptionByDefault:
-                SSEAlgorithm: AES256
-        BucketName: DataBucket
-        Tags:
-          - Key: a
-            Value: b
-          - Key: c
-            Value: d
+      type: microstrate::objectstore::bucket
+      deletionPolicy: retain
+      properties:
+        name: DataBucket
+        description: Bucket for storing files
+        metadata:
+          a: b
+          c: d
+
+    DataStream:
+      type: microstrate::stream
+      deletionPolicy: retain
+      properties:
+        name: DataStream
+        description: stream for storing events
+        subjects:
+          - ONE.>
+          - TWO.>
+        maxConsumers: 10
+        maxMsgs: 1000
+        storage: file
+        discardNewPerSubject: false
+        maxMsgsPerSubject: 100
+        maxMsgSize: 1024
+        numReplicas: 2
+        metadata:
+          a: b
+          c: d
+
+    DataGateway:
+      type: microstrate::gateway
+      deletionPolicy: retain
+      properties:
+        name: DataGateway
+        description: gateway for serving events
+        limit:
+          request: 100
+          time: 100
+        metadata:
+          a: b
+          c: d
 
 functions:
   hello:
