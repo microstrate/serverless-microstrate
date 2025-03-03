@@ -89,7 +89,7 @@ functions:
       APP_ENV_VARIABLE: FOOBAR
     events:
       - http:
-          path: ${self:custom.apiPrefix}/hello
+          path: ${self:custom.apiPrefix}/hello/:id
           method: 'post'
           cors:
             origins:

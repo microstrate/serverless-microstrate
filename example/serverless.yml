@@ -93,13 +93,14 @@ functions:
     timeout: 3
     environment:
       APP_ENV_VARIABLE: FOOBAR
-    events:
-      - http:
-          path: ${self:custom.apiPrefix}/hello
-          method: 'post'
-          cors:
-            origins:
-              - '*'
+    gateway:
+      - path: ${self:custom.apiPrefix}/hello
+        isPublic: true
+        limit:
+          request: 100
+          time: 1000
+        method: post
+        timeout: 120
 
   world:
     handler: handler.hello
@@ -109,10 +110,12 @@ functions:
 
   helloWorld:
     handler: handler.hello
-    events:
-      - httpApi: 'POST /hello'
-      - httpApi: 'PUT /hello'
-      - httpApi: 'DELETE /hello'
-      - httpApi:
-          method: GET
-          path: /hello
+    gateway:
+      - path: ${self:custom.apiPrefix}/hello
+        method: post
+      - path: ${self:custom.apiPrefix}/hello
+        method: put
+      - path: ${self:custom.apiPrefix}/hello
+        method: get
+      - path: ${self:custom.apiPrefix}/hello
+        method: delete
