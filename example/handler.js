@@ -1,5 +1,5 @@
 'use strict'
 
-exports.hello = (event, context, callback) => {
-  callback(null, `${event} ${context} Hello world!`)
+exports.hello = (event, context) => {
+  return `${event} ${context} Hello world!`
 }

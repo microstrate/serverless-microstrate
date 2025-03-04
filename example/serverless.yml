@@ -29,7 +29,7 @@ resources:
       type: microstrate::kv::bucket
       deletionPolicy: retain
       properties:
-        name: DataStore
+        bucket: DataStore
         description: Table for storing records
         indexing:
           mappings:
@@ -46,7 +46,7 @@ resources:
       type: microstrate::objectstore::bucket
       deletionPolicy: retain
       properties:
-        name: DataBucket
+        bucket: DataBucket
         description: Bucket for storing files
         metadata:
           a: b
