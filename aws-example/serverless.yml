@@ -105,8 +105,8 @@ functions:
     handler: handler.hello
     events:
       - httpApi: 'POST /hello'
-      - httpApi: 'PUT /hello'
-      - httpApi: 'DELETE /hello'
-      - httpApi:
-          method: GET
-          path: /hello
+      # - httpApi: 'PUT /hello'
+      # - httpApi: 'DELETE /hello'
+      # - httpApi:
+      #     method: GET
+      #     path: /hello

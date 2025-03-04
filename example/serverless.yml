@@ -78,6 +78,7 @@ resources:
       properties:
         name: DataGateway
         description: gateway for serving events
+        active: true
         limit:
           request: 100
           time: 100
@@ -113,9 +114,9 @@ functions:
     gateway:
       - path: ${self:custom.apiPrefix}/hello
         method: post
-      - path: ${self:custom.apiPrefix}/hello
-        method: put
-      - path: ${self:custom.apiPrefix}/hello
-        method: get
-      - path: ${self:custom.apiPrefix}/hello
-        method: delete
+      # - path: ${self:custom.apiPrefix}/hello
+      #   method: put
+      # - path: ${self:custom.apiPrefix}/hello
+      #   method: get
+      # - path: ${self:custom.apiPrefix}/hello
+      #   method: delete
