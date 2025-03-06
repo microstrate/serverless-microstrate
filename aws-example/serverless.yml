@@ -8,6 +8,14 @@ plugins:
 package:
   individually: true
 
+layers:
+  utility:
+    name: ${self:service}-utility-layer
+    path: ./layers/utility
+  echo:
+    name: ${self:service}-echo-layer
+    path: ./layers/echo
+
 custom:
   apiPrefix: apiv2
 
@@ -110,3 +118,6 @@ functions:
       # - httpApi:
       #     method: GET
       #     path: /hello
+    layers:
+      - { Ref: UtilityLambdaLayer }
+      - { Ref: EchoLambdaLayer }
