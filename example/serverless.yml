@@ -27,24 +27,24 @@ resources:
   Resources:
     DataStore:
       type: microstrate::kv::bucket
-      deletionPolicy: retain
+      deletion_policy: retain
       properties:
         bucket: DataStore
         description: Table for storing records
         indexing:
           mappings:
             - field: PK
-              fieldType: text
+              field_type: text
             - field: SK
-              fieldType: text
+              field_type: text
             - field: subject
-              fieldType: text
+              field_type: text
             - field: topic
-              fieldType: tex
+              field_type: tex
 
     DataBucket:
       type: microstrate::objectstore::bucket
-      deletionPolicy: retain
+      deletion_policy: retain
       properties:
         bucket: DataBucket
         description: Bucket for storing files
@@ -54,27 +54,27 @@ resources:
 
     DataStream:
       type: microstrate::stream
-      deletionPolicy: retain
+      deletion_policy: retain
       properties:
         name: DataStream
         description: stream for storing events
         subjects:
           - ONE.>
           - TWO.>
-        maxConsumers: 10
-        maxMsgs: 1000
+        max_consumers: 10
+        max_msgs: 1000
         storage: file
-        discardNewPerSubject: false
-        maxMsgsPerSubject: 100
-        maxMsgSize: 1024
-        numReplicas: 2
+        discard_new_per_subject: false
+        max_msgs_per_subject: 100
+        max_msg_size: 1024
+        num_replicas: 2
         metadata:
           a: b
           c: d
 
     DataGateway:
       type: microstrate::gateway
-      deletionPolicy: retain
+      deletion_policy: retain
       properties:
         name: DataGateway
         description: gateway for serving events
@@ -96,7 +96,7 @@ functions:
       APP_ENV_VARIABLE: FOOBAR
     gateway:
       - path: ${self:custom.apiPrefix}/hello
-        isPublic: true
+        is_public: true
         limit:
           request: 100
           time: 1000
