@@ -19,6 +19,7 @@ provider:
   stage: prod
   memorySize: 1024
   timeout: 60
+  credentials: ${env:MICROSTRATE_API_KEY}
   environment:
     SERVICE: ${self:service}
 
