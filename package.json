@@ -1,6 +1,6 @@
 {
   "name": "@evari/serverless-microstrate",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Serverless plugin to support MicroStrate provider",
   "main": "index.js",
   "publishConfig": {
